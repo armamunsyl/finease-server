@@ -44,6 +44,13 @@ async function run() {
             const result = await transactionCollection.insertOne(transaction);
             res.send(result);
         });
+        
+        app.get("/transactions", async (req, res) => {
+            const email = req.query.email;
+            const query = { userEmail: email };
+            const result = await transactionCollection.find(query).sort({ date: -1 }).toArray();
+            res.send(result);
+        });
 
         console.log("✅ MongoDB connected & FinEase routes active!");
     } finally {
