@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion , ObjectId } = require('mongodb');
 require('dotenv').config();
 const cors = require('cors');
 const app = express();
@@ -44,11 +44,30 @@ async function run() {
             const result = await transactionCollection.insertOne(transaction);
             res.send(result);
         });
-        
+
         app.get("/transactions", async (req, res) => {
             const email = req.query.email;
             const query = { userEmail: email };
             const result = await transactionCollection.find(query).sort({ date: -1 }).toArray();
+            res.send(result);
+        });
+
+        app.patch("/transactions/:id", async (req, res) => {
+            const id = req.params.id;
+            const updatedData = req.body;
+            const filter = { _id: new ObjectId(id) };
+
+            const updateDoc = {
+                $set: {
+                    type: updatedData.type,
+                    category: updatedData.category,
+                    amount: updatedData.amount,
+                    description: updatedData.description,
+                    date: updatedData.date,
+                }
+            }
+
+            const result = await transactionCollection.updateOne(filter, updateDoc);
             res.send(result);
         });
 
