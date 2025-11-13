@@ -78,7 +78,7 @@ async function run() {
             res.send(result);
         });
 
-        console.log("✅ MongoDB connected & FinEase routes active!");
+        // console.log("✅ MongoDB connected & FinEase routes active!");
     } finally {
     }
 }
@@ -86,5 +86,5 @@ run().catch(console.dir);
 
 
 app.listen(port, () => {
-    console.log(`finease server is running on port: ${port}`)
+    // console.log(`finease server is running on port: ${port}`)
 });
